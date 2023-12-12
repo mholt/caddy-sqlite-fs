@@ -2,7 +2,10 @@ module github.com/mholt/caddy-sqlite-fs
 
 go 1.21.4
 
-require github.com/caddyserver/caddy/v2 v2.7.6
+require (
+	github.com/caddyserver/caddy/v2 v2.7.6
+	github.com/mattn/go-sqlite3 v1.14.18
+)
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect

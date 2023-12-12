@@ -11,6 +11,8 @@ import (
 
 	"github.com/caddyserver/caddy/v2"
 	"github.com/caddyserver/caddy/v2/caddyconfig/caddyfile"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func init() {
