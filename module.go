@@ -37,7 +37,6 @@ func (s SQLiteFS) Provision(ctx caddy.Context) error {
 	if err != nil {
 		return err
 	}
-	defer db.Close()
 
 	s.db = db
 	return nil
