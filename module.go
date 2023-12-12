@@ -24,6 +24,14 @@ type SQLiteFS struct {
 	db *sql.DB
 }
 
+// Validate the SQLite connection with a ping
+func (s *SQLiteFS) Validate() error {
+	if s.db == nil {
+		return errors.New("sqlitefs: database is not opened")
+	}
+	return s.db.Ping()
+}
+
 // CaddyModule returns the Caddy module information.
 func (SQLiteFS) CaddyModule() caddy.ModuleInfo {
 	return caddy.ModuleInfo{
@@ -37,7 +45,6 @@ func (s SQLiteFS) Provision(ctx caddy.Context) error {
 	if err != nil {
 		return err
 	}
-	defer db.Close()
 
 	s.db = db
 	return nil
@@ -114,4 +121,5 @@ var (
 	_ caddy.CleanerUpper    = (*SQLiteFS)(nil)
 	_ fs.FS                 = (*SQLiteFS)(nil)
 	_ caddyfile.Unmarshaler = (*SQLiteFS)(nil)
+	_ caddy.Validator       = (*SQLiteFS)(nil)
 )
