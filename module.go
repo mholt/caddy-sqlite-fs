@@ -42,12 +42,11 @@ func (SQLiteFS) CaddyModule() caddy.ModuleInfo {
 	}
 }
 
-func (s SQLiteFS) Provision(ctx caddy.Context) error {
+func (s *SQLiteFS) Provision(ctx caddy.Context) error {
 	db, err := sql.Open("sqlite3", s.DBPath)
 	if err != nil {
 		return err
 	}
-
 	s.db = db
 	return nil
 }
@@ -74,7 +73,7 @@ func (s SQLiteFS) Open(name string) (fs.File, error) {
 		return nil, fmt.Errorf("querying DB or scanning row: %w", err)
 	}
 
-	f := sqliteFile{
+	f := &sqliteFile{
 		reader: bytes.NewBuffer(content),
 		info: sqliteFileInfo{
 			size: int64(len(content)),
@@ -97,7 +96,7 @@ type sqliteFile struct {
 
 func (f sqliteFile) Stat() (fs.FileInfo, error) { return f.info, nil }
 func (f sqliteFile) Read(p []byte) (int, error) { return f.reader.Read(p) }
-func (f sqliteFile) Close() error {
+func (f *sqliteFile) Close() error {
 	f.reader = nil
 	f.info = sqliteFileInfo{}
 	return nil
